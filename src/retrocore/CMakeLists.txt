@@ -1,4 +1,4 @@
-project(RetroTutorial1)
+project(Atomic_Heart)
 
 set (CMAKE_CXX_STANDARD 11)
 
