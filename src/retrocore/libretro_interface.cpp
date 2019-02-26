@@ -1,8 +1,9 @@
 #include "libretro.h"
 #include <cstring>
 
-static const unsigned FRAMEBUFFER_WIDTH = 320;
-static const unsigned FRAMEBUFFER_HEIGHT = 240;
+static const unsigned FRAMEBUFFER_WIDTH = 480;
+static const unsigned FRAMEBUFFER_HEIGHT = 272;
+
 
 // Callbacks
 static retro_log_printf_t log_cb;
@@ -23,67 +24,54 @@ void retro_cheat_reset(void)
 
 }
 
-void retro_cheat_set(unsigned index, bool enabled, const char *code)
-{
+void retro_cheat_set(unsigned index, bool enabled, const char *code) {
 
 }
 
-bool retro_load_game(const struct retro_game_info *info)
-{
+bool retro_load_game(const struct retro_game_info *info) {
     return true;
 }
 
-bool retro_load_game_special(unsigned game_type, const struct retro_game_info *info, size_t num_info)
-{
+bool retro_load_game_special(unsigned game_type, const struct retro_game_info *info, size_t num_info) {
     return false;
 }
 
-void retro_unload_game(void)
-{
+void retro_unload_game(void) {
 
 }
 
-unsigned retro_get_region(void)
-{
+unsigned retro_get_region(void) {
     return RETRO_REGION_NTSC;
 }
 
-void retro_set_controller_port_device(unsigned port, unsigned device)
-{
+void retro_set_controller_port_device(unsigned port, unsigned device) {
 
 }
 
-void *retro_get_memory_data(unsigned id)
-{
+void *retro_get_memory_data(unsigned id) {
     return NULL;
 }
 
-size_t retro_get_memory_size(unsigned id)
-{
+size_t retro_get_memory_size(unsigned id) {
     return 0;
 }
 
-size_t retro_serialize_size(void)
-{
+size_t retro_serialize_size(void) {
     return 0;
 }
 
-bool retro_serialize(void *data, size_t size)
-{
+bool retro_serialize(void *data, size_t size) {
     return false;
 }
 
-bool retro_unserialize(const void *data, size_t size)
-{
+bool retro_unserialize(const void *data, size_t size) {
     return false;
 }
 
-void retro_deinit(void)
-{
+void retro_deinit(void) {
 }
 
-void retro_set_environment(retro_environment_t cb)
-{
+void retro_set_environment(retro_environment_t cb) {
     environ_cb = cb;
     bool no_rom = true;
     cb(RETRO_ENVIRONMENT_SET_SUPPORT_NO_GAME, &no_rom);
@@ -96,33 +84,28 @@ void retro_set_input_poll(retro_input_poll_t cb) { input_poll_cb = cb; }
 void retro_set_input_state(retro_input_state_t cb) { input_state_cb = cb; }
 
 
-
-void retro_init(void)
-{
+void retro_init(void) {
 }
 
-void retro_get_system_info(struct retro_system_info *info)
-{
+void retro_get_system_info(struct retro_system_info *info) {
     memset(info, 0, sizeof(*info));
-    info->library_name = "RetroTutorial1";
+    info->library_name = "Atomic Heart";
     info->library_version = "0.1";
     info->need_fullpath = false;
     info->valid_extensions = "game";
 }
 
-void retro_get_system_av_info(struct retro_system_av_info *info)
-{
-
+void retro_get_system_av_info(struct retro_system_av_info *info) {
     int pixel_format = RETRO_PIXEL_FORMAT_XRGB8888;
 
     memset(info, 0, sizeof(*info));
     info->timing.fps            = 60.0f;
-    info->timing.sample_rate    = 44100;
+    info->timing.sample_rate    = 22050;
     info->geometry.base_width   = FRAMEBUFFER_WIDTH;
     info->geometry.base_height  = FRAMEBUFFER_HEIGHT;
     info->geometry.max_width    = FRAMEBUFFER_WIDTH;
     info->geometry.max_height   = FRAMEBUFFER_HEIGHT;
-    info->geometry.aspect_ratio = 4.0/3.0;
+    info->geometry.aspect_ratio = (float)FRAMEBUFFER_WIDTH / (float)FRAMEBUFFER_HEIGHT;
 
     environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &pixel_format);
 }
@@ -130,8 +113,6 @@ void retro_get_system_av_info(struct retro_system_av_info *info)
 void retro_reset(void) { }
 
 
-
-void retro_run(void)
-{
+void retro_run(void) {
     video_cb(nullptr, FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT, sizeof(uint32_t) * FRAMEBUFFER_WIDTH);
 }
