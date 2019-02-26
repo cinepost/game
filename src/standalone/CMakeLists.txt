@@ -1,3 +1,5 @@
+project ( soVoq )
+
 set ( SOURCES
     ./game.cpp
     ./sprites/sprite.cpp

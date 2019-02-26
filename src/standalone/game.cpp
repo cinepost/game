@@ -139,8 +139,8 @@ int main( int argc, char * argv[] )
     glUniformMatrix4fv( glGetUniformLocation( program, "u_projection_matrix" ), 1, GL_FALSE, projection_matrix );
 
     // test sprite
-    Sprites::Sprite *sprite = new Sprites::Sprite();
-    sprite->loadFromImage("graphics/characters.png");
+    //Sprites::Sprite *sprite = new Sprites::Sprite();
+    //sprite->loadFromImage("graphics/characters.png");
 
 
     for( ;; )

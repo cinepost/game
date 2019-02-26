@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED( VERSION 3.5 )
 
-PROJECT( Game  )
+PROJECT( game  )
 
 LIST( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake )
 
@@ -44,6 +44,8 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/include 
 )
+
+add_definitions( -D_GAME_RESOURCES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/resources/")
 
 add_subdirectory( src/retrocore )
 add_subdirectory( src/standalone )

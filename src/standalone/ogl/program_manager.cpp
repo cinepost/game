@@ -23,11 +23,16 @@ Program_Manager::~Program_Manager(void) {
 }
 
 std::string Program_Manager::ResourcePath(std::string fileName) {
-  return "/Users/max/dev/game/resources/" + fileName;
+  // quick development hack to locate resources dir
+  #ifdef _GAME_RESOURCES_DIR
+    return _GAME_RESOURCES_DIR + fileName;
+  #else
+    return fileName;
+  #endif
 }
  
 bool Program_Manager::createProgram(const std::string& programName, const std::string& vertexShaderFilename, const std::string& fragmentShaderFilename) {
-    std::cout << "creating program for " << programName << std::endl;
+    std::cout << "creating opengl program: " << programName << std::endl;
     
     std::vector<Shader> shaders;
     shaders.push_back(Shader::shaderFromFile(ResourcePath(vertexShaderFilename.c_str()), GL_VERTEX_SHADER));
