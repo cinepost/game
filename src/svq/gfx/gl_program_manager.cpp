@@ -1,6 +1,6 @@
-#include "program_manager.h"
+#include "gl_program_manager.h"
  
-using namespace ogl;
+using namespace svq::gfx;
  
 //don't forget about this little static guy in cpp
 std::map<std::string, Program*> Program_Manager::programs;

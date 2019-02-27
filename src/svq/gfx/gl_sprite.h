@@ -1,5 +1,5 @@
-#ifndef SPRITE__H
-#define SPRITE__H
+#ifndef GL_SPRITE__H
+#define GL_SPRITE__H
 
 #include <string>
 
@@ -9,7 +9,17 @@
 #include <SDL_image.h>
 #include <SDL_opengl.h>
 
-namespace Sprites {
+#include "svq/math/vec2.h"
+
+namespace svq { namespace gfx {
+
+struct UVCoord {
+	UVCoord():a(0.0f, 0.0f), b(1.0f, 0.0f), c(1.0, 1.0f), d(0.0f, 1.0f) {}
+	math::Vec2d a;
+	math::Vec2d b;
+	math::Vec2d c;
+	math::Vec2d d;
+};
 
 class Sprite {
 	public:
@@ -25,7 +35,7 @@ class Sprite {
 		GLuint vao, vbo;
 };
 
-}
+} }
 
 
-#endif // SPRITE__H
+#endif // GL_SPRITE__H

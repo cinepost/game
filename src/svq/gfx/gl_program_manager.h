@@ -1,5 +1,5 @@
-#ifndef PROGRAM_MANAGER_H
-#define PROGRAM_MANAGER_H
+#ifndef GL_PROGRAM_MANAGER__H
+#define GL_PROGRAM_MANAGER__H
 
 #include <fstream>
 #include <iostream>
@@ -9,9 +9,9 @@
 #define GL_GLEXT_PROTOTYPES
 #include <SDL_opengl.h>
 
-#include "program.h"
+#include "svq/gfx/gl_program.h"
 
-namespace ogl {
+namespace svq { namespace gfx {
 
 
 class Program_Manager {
@@ -27,6 +27,6 @@ class Program_Manager {
     static std::map<std::string, Program*> programs;
 };
 
-}
+} }
 
-#endif // PROGRAM_MANAGER_H
+#endif // GL_PROGRAM_MANAGER__H

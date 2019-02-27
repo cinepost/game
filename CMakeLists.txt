@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED( VERSION 3.5 )
 
-PROJECT( game  )
+PROJECT( SOVOQ  )
 
 LIST( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake )
 
@@ -40,12 +40,14 @@ set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 include_directories( 
-    ${CMAKE_CURRENT_SOURCE_DIR}/include 
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/include 
+  ${CMAKE_CURRENT_SOURCE_DIR}/src
+  ${CMAKE_CURRENT_SOURCE_DIR}/include 
+  ${CMAKE_CURRENT_SOURCE_DIR}/third_party
+  ${CMAKE_CURRENT_SOURCE_DIR}/third_party/include 
 )
 
 add_definitions( -D_GAME_RESOURCES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/resources/")
 
-add_subdirectory( src/retrocore )
-add_subdirectory( src/standalone )
+add_subdirectory( src/svq ) # sovoq engine library
+add_subdirectory( src/sovoqexe ) # standalone sovoq engine executable
+#add_subdirectory( src/retrocore ) # libretro core version

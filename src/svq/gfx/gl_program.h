@@ -1,10 +1,10 @@
-#ifndef PROGRAM_H
-#define PROGRAM_H
+#ifndef GL_PROGRAM__H
+#define GL_PROGRAM__H
 
-#include "shader.h"
+#include "svq/gfx/gl_shader.h"
 #include <vector>
 
-namespace ogl {
+namespace svq { namespace gfx {
 
     /**
      Represents an OpenGL program made by linking shaders.
@@ -50,6 +50,6 @@ namespace ogl {
         const Program& operator=(const Program&);
     };
 
-}
+} }
 
-#endif // PROGRAM_H
+#endif // GL_PROGRAM__H

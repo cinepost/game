@@ -1,5 +1,5 @@
-#ifndef SHADER_H
-#define SHADER_H
+#ifndef GL_SHADER__H
+#define GL_SHADER__H
 
 #include <iostream>
 #include <string>
@@ -7,7 +7,7 @@
 #define GL_GLEXT_PROTOTYPES
 #include <SDL_opengl.h>
 
-namespace ogl {
+namespace svq { namespace gfx {
 
     /**
      Represents a compiled OpenGL shader.
@@ -58,6 +58,6 @@ namespace ogl {
         void _release();
     };
     
-}
+} }
 
-#endif // SHADER_H
+#endif // GL_SHADER__H

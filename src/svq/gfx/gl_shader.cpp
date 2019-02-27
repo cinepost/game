@@ -4,9 +4,9 @@
 #include <cassert>
 #include <sstream>
 
-#include "shader.h"
+#include "gl_shader.h"
 
-using namespace ogl;
+using namespace svq::gfx;
 
 Shader::Shader(GLenum shaderType, const std::string& shaderCode) :
     _object(0),

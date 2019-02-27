@@ -1,8 +1,8 @@
 #include <stdexcept>
 
-#include "program.h"
+#include "svq/gfx/gl_program.h"
 
-using namespace ogl;
+using namespace svq::gfx;
 
 Program::Program(const std::vector<Shader>& shaders) : _gl_program(0) {
     if(shaders.size() <= 0)

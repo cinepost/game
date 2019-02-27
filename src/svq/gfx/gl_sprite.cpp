@@ -1,6 +1,6 @@
-#include "sprite.h"
+#include "gl_sprite.h"
 
-using namespace Sprites;
+using namespace svq::gfx;
 
 Sprite::Sprite() {
 	glGenTextures(1, &tex_id);

@@ -1,19 +1,3 @@
-/*
-    Minimal SDL2 + OpenGL3 example.
-
-    Author: https://github.com/koute
-
-    This file is in the public domain; you can do whatever you want with it.
-    In case the concept of public domain doesn't exist in your jurisdiction
-    you can also use this code under the terms of Creative Commons CC0 license,
-    either version 1.0 or (at your option) any later version; for details see:
-        http://creativecommons.org/publicdomain/zero/1.0/
-
-    This software is distributed without any warranty whatsoever.
-
-    Compile and run with: gcc opengl3_hello.c `sdl2-config --libs --cflags` -lGL -Wall && ./a.out
-*/
-
 #define GL_GLEXT_PROTOTYPES
 
 #include <vector>
@@ -24,10 +8,9 @@
 
 #include <stdio.h>
 
-#include "ogl/program_manager.h"
-#include "sprites/sprite.h"
+#include "svq/gfx/gl_program_manager.h"
 
-ogl::Program_Manager* programManager;
+svq::gfx::Program_Manager* programManager;
 
 typedef float t_mat4x4[16];
 
@@ -66,7 +49,13 @@ typedef enum t_attrib_id
 
 int main( int argc, char * argv[] )
 {
-    SDL_Init( SDL_INIT_VIDEO );
+    // Set up SDL of course ...
+
+    if (SDL_Init( SDL_INIT_VIDEO ) != 0) {
+        std::cerr << "Error: " << SDL_GetError() << std::endl;
+        return -1;
+    }
+
     SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
     SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
     SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 8 );
@@ -83,10 +72,10 @@ int main( int argc, char * argv[] )
 
     bool isFullscreen = false;
 
-    SDL_Window * window = SDL_CreateWindow( "", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
+    SDL_Window * window = SDL_CreateWindow( "soVoq", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
     SDL_GLContext context = SDL_GL_CreateContext( window );
 
-    programManager = new ogl::Program_Manager();
+    programManager = new svq::gfx::Program_Manager();
 
     if (!programManager->createProgram( "virual_screen", 
             "shaders/virtual_screen_vertex.glsl", 
@@ -137,10 +126,6 @@ int main( int argc, char * argv[] )
     t_mat4x4 projection_matrix;
     mat4x4_ortho( projection_matrix, 0.0f, (float)width, (float)height, 0.0f, 0.0f, 100.0f );
     glUniformMatrix4fv( glGetUniformLocation( program, "u_projection_matrix" ), 1, GL_FALSE, projection_matrix );
-
-    // test sprite
-    //Sprites::Sprite *sprite = new Sprites::Sprite();
-    //sprite->loadFromImage("graphics/characters.png");
 
 
     for( ;; )
