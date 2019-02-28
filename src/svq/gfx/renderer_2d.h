@@ -2,6 +2,7 @@
 #define RENDERER__H
 
 #include "svq/api.h"
+#include "svq/math/vec2.h"
 #include "svq/gfx/vertex_array.h"
 #include "svq/gfx/index_buffer.h"
 #include "svq/gfx/renderable_2d.h"
@@ -16,18 +17,25 @@ enum class SVQ_API RenderTarget {
 
 class Renderer_2D { 
     public:
-    	static Renderer_2D* create();
+    	Renderer_2D(uint width, uint height);
+    	Renderer_2D(const math::Vec2<uint>& screenSize);
+    	~Renderer_2D();
 
     	void push(const Renderable_2D* renderable);
     	void flush();
+
+    private:
+    	void init();
 
     private:
     	RenderTarget m_Target;
     	VertexArray* m_VertexArray;
 			IndexBuffer* m_IndexBuffer;
 			VertexData* m_Buffer;
+			Framebuffer2D* m_Framebuffer;
 
 			uint m_IndexCount;
+			math::Vec2<uint> m_ScreenSize, m_ViewportSize;
 };
     
 }

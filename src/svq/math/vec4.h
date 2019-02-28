@@ -11,7 +11,7 @@ public:
 	T x, y, z, w;
 	
 	Vec4() :x(0), y(0), z(0), w(0) {}
-	Vec4(T x, T y, T z) : x(x), y(y), z(z), w(w) {}
+	Vec4(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {}
 	Vec4(const Vec4& v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
 	
 	Vec4& operator=(const Vec4& v) {

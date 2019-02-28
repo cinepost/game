@@ -8,7 +8,9 @@
 
 #include <stdio.h>
 
+#include "svq/math/vec4.h"
 #include "svq/gfx/ogl/gl_program_manager.h"
+#include "svq/gfx/sprite.h"
 #include "svq/gfx/renderer_2d.h"
 
 svq::gfx::Program_Manager* programManager;
@@ -129,11 +131,11 @@ int main( int argc, char * argv[] )
     glUniformMatrix4fv( glGetUniformLocation( program, "u_projection_matrix" ), 1, GL_FALSE, projection_matrix );
 
 
-    svq::gfx::Renderer_2D *renderer = new svq::gfx::Renderer_2D();
+    svq::gfx::Renderer_2D *renderer = new svq::gfx::Renderer_2D(width, height);
+    svq::gfx::Sprite *sprite = new svq::gfx::Sprite(10, 10, 32, 32, svq::math::Vec4f(1,0,0,1));
 
 
-    for( ;; )
-    {
+    for( ;; ) {
         glClear( GL_COLOR_BUFFER_BIT );
 
         SDL_Event event;
@@ -170,6 +172,7 @@ int main( int argc, char * argv[] )
     SDL_DestroyWindow( window );
     SDL_Quit();
 
+    delete sprite;
     delete renderer;
 
     return 0;
