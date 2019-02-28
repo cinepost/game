@@ -4,6 +4,50 @@
 		"selected_items":
 		[
 			[
+				"s",
+				"size"
+			],
+			[
+				"glBi",
+				"glBindVertexArray"
+			],
+			[
+				"in",
+				"indices"
+			],
+			[
+				"RE",
+				"RENDERER_INDICES_SIZE"
+			],
+			[
+				"def",
+				"define"
+			],
+			[
+				"REN",
+				"RENDERER_VERTEX_SIZE"
+			],
+			[
+				"m_",
+				"m_VAO"
+			],
+			[
+				"SHAD",
+				"SHADER_COLOR_INDEX"
+			],
+			[
+				"GL",
+				"GL_ARRAY_BUFFER"
+			],
+			[
+				"GL_",
+				"GL_FLOAT"
+			],
+			[
+				"name",
+				"namespace"
+			],
+			[
 				"is",
 				"isFullscreen"
 			],
@@ -90,10 +134,6 @@
 			[
 				"n",
 				"name"
-			],
-			[
-				"in",
-				"int"
 			],
 			[
 				"RIB",
@@ -428,10 +468,6 @@
 				"viewports"
 			],
 			[
-				"s",
-				"self"
-			],
-			[
 				"views",
 				"views_layout"
 			],
@@ -478,42 +514,6 @@
 			[
 				"prim",
 				"primType"
-			],
-			[
-				"parm",
-				"parm_template"
-			],
-			[
-				"class",
-				"classmethod"
-			],
-			[
-				"size",
-				"sizez"
-			],
-			[
-				"half",
-				"halfz"
-			],
-			[
-				"ha",
-				"halfy"
-			],
-			[
-				"d",
-				"divsy"
-			],
-			[
-				"displ",
-				"display_node"
-			],
-			[
-				"dis",
-				"distanceFromTarget"
-			],
-			[
-				"len",
-				"length"
 			]
 		]
 	},
@@ -556,7 +556,7 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/max/dev/game"
+		"/Users/max/dev/sovoq"
 	],
 	"file_history":
 	[
@@ -733,7 +733,7 @@
 	},
 	"input":
 	{
-		"height": 0.0
+		"height": 36.0
 	},
 	"layout":
 	{
@@ -767,10 +767,10 @@
 		"height": 25.0
 	},
 	"pinned_build_system": "",
-	"project": "game.sublime-project",
+	"project": "sovoq.sublime-project",
 	"replace":
 	{
-		"height": 44.0
+		"height": 70.0
 	},
 	"save_all_on_build": true,
 	"select_file":

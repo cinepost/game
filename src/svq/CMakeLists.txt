@@ -1,9 +1,15 @@
 set ( SOURCES
 	./gfx/utils.cpp
-	./gfx/gl_sprite.cpp
-	./gfx/gl_shader.cpp
-	./gfx/gl_program.cpp
-	./gfx/gl_program_manager.cpp
+	./gfx/texture.cpp
+	./gfx/sprite.cpp
+	./gfx/renderable_2d.cpp
+	./gfx/renderer_2d.cpp
+	./gfx/buffer_layout.cpp
+	./gfx/ogl/gl_index_buffer.cpp
+	./gfx/ogl/gl_sprite.cpp
+	./gfx/ogl/gl_shader.cpp
+	./gfx/ogl/gl_program.cpp
+	./gfx/ogl/gl_program_manager.cpp
 )
 
 # SDL2 libs

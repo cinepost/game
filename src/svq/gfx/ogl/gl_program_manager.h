@@ -9,7 +9,7 @@
 #define GL_GLEXT_PROTOTYPES
 #include <SDL_opengl.h>
 
-#include "svq/gfx/gl_program.h"
+#include "svq/gfx/ogl/gl_program.h"
 
 namespace svq { namespace gfx {
 

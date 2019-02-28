@@ -15,7 +15,7 @@ public:
 	Vec4(const Vec4& v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
 	
 	Vec4& operator=(const Vec4& v) {
-		x = v.x; y = v.y; z = v.z; w = z.w;
+		x = v.x; y = v.y; z = v.z; w = v.w;
 		return *this;
 	}
 	

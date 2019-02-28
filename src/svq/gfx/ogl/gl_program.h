@@ -1,7 +1,7 @@
 #ifndef GL_PROGRAM__H
 #define GL_PROGRAM__H
 
-#include "svq/gfx/gl_shader.h"
+#include "svq/gfx/ogl/gl_shader.h"
 #include <vector>
 
 namespace svq { namespace gfx {

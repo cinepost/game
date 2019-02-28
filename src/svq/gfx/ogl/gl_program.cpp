@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "svq/gfx/gl_program.h"
+#include "svq/gfx/ogl/gl_program.h"
 
 using namespace svq::gfx;
 

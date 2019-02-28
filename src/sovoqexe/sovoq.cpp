@@ -8,7 +8,8 @@
 
 #include <stdio.h>
 
-#include "svq/gfx/gl_program_manager.h"
+#include "svq/gfx/ogl/gl_program_manager.h"
+#include "svq/gfx/renderer_2d.h"
 
 svq::gfx::Program_Manager* programManager;
 
@@ -128,6 +129,9 @@ int main( int argc, char * argv[] )
     glUniformMatrix4fv( glGetUniformLocation( program, "u_projection_matrix" ), 1, GL_FALSE, projection_matrix );
 
 
+    svq::gfx::Renderer_2D *renderer = new svq::gfx::Renderer_2D();
+
+
     for( ;; )
     {
         glClear( GL_COLOR_BUFFER_BIT );
@@ -165,6 +169,8 @@ int main( int argc, char * argv[] )
     SDL_GL_DeleteContext( context );
     SDL_DestroyWindow( window );
     SDL_Quit();
+
+    delete renderer;
 
     return 0;
 }

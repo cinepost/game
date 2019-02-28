@@ -4,9 +4,10 @@
 #include <cassert>
 #include <sstream>
 
-#include "gl_shader.h"
+#include "svq/gfx/ogl/gl_shader.h"
 
-using namespace svq::gfx;
+namespace svq {
+namespace gfx {
 
 Shader::Shader(GLenum shaderType, const std::string& shaderCode) :
     _object(0),
@@ -99,4 +100,7 @@ void Shader::_release() {
         glDeleteShader(_object); _object = 0;
         delete _refCount; _refCount = NULL;
     }
+}
+
+}
 }

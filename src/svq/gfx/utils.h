@@ -1,11 +1,11 @@
 #ifndef UTILS__H
 #define UTILS__H
 
-#include "svq/gfx/gl_sprite.h"
+//#include "svq/gfx/gl_sprite.h"
 
 namespace svq { namespace gfx {
 
-inline bool compareSprites( const Sprite& a, const Sprite& b);
+//inline bool compareSprites( const Sprite& a, const Sprite& b);
 
 } }
 

@@ -1,4 +1,4 @@
-#include "gl_program_manager.h"
+#include "svq/gfx/ogl/gl_program_manager.h"
  
 using namespace svq::gfx;
  

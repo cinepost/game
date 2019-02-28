@@ -7,12 +7,13 @@
 #define GL_GLEXT_PROTOTYPES
 #include <SDL_opengl.h>
 
-namespace svq { namespace gfx {
+namespace svq {
+namespace gfx {
 
-    /**
-     Represents a compiled OpenGL shader.
-     */
-    class Shader { 
+/**
+ Represents a compiled OpenGL shader.
+ */
+class Shader { 
     public:
         
         /**
@@ -56,8 +57,9 @@ namespace svq { namespace gfx {
         
         void _retain();
         void _release();
-    };
+};
     
-} }
+}
+}
 
 #endif // GL_SHADER__H
