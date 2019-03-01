@@ -43,7 +43,6 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/src
   ${CMAKE_CURRENT_SOURCE_DIR}/include 
   ${CMAKE_CURRENT_SOURCE_DIR}/third_party
-  ${CMAKE_CURRENT_SOURCE_DIR}/third_party/include 
 )
 
 add_definitions( -D_GAME_RESOURCES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/resources/")
