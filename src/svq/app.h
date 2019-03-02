@@ -10,6 +10,7 @@
 #include <SDL_opengl.h>
 
 #include "svq/api.h"
+#include "svq/gfx/sprite.h"
 #include "svq/gfx/renderer_2d.h"
 
 namespace svq{
@@ -30,7 +31,9 @@ class SVQ_API App {
 		bool m_Retrocore;
 		bool isFullscreen;
 
+		// test stuff
 		gfx::Renderer_2D *m_Renderer;
+		gfx::Sprite *m_Sprite;
 };
 
 }

@@ -26,7 +26,7 @@ struct VertexData {
     math::Vec2f uv;
     math::Vec4f color;
     unsigned char texture_id;
-    unsigned char shader_id;
+    //unsigned char shader_id;
 };
 
 #define RENDERER_VERTEX_SIZE    sizeof(VertexData)

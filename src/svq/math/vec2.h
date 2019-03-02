@@ -22,20 +22,24 @@ class Vec2 {
 			y = v.y;
 			return *this;
 		}
+
+		bool operator!=(const Vec2& v) {
+			return (x != v.x) ? true : ( (x != v.x) ? true : false);
+		}
 		
-		Vec2 operator+(Vec2& v) {
+		Vec2 operator+(const Vec2& v) {
 			return Vec2(x + v.x, y + v.y);
 		}
-		Vec2 operator-(Vec2& v) {
+		Vec2 operator-(const Vec2& v) {
 			return Vec2(x - v.x, y - v.y);
 		}
 		
-		Vec2& operator+=(Vec2& v) {
+		Vec2& operator+=(const Vec2& v) {
 			x += v.x;
 			y += v.y;
 			return *this;
 		}
-		Vec2& operator-=(Vec2& v) {
+		Vec2& operator-=(const Vec2& v) {
 			x -= v.x;
 			y -= v.y;
 			return *this;

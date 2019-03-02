@@ -11,6 +11,7 @@ App::App(bool retrocore) {
 
 App::~App() {
 	delete m_Renderer;
+	delete m_Sprite;
 
 	if (!m_Retrocore) {
 		// SDL cleanup
@@ -53,15 +54,19 @@ bool App::init() {
 
 	// testing renderer
 	m_Renderer = new gfx::Renderer_2D( width, height);
+	m_Sprite = new gfx::Sprite( 10, 10, 32, 32, math::Vec4f(1, 1, 1, 1));
 
 	std::cout << "app init ok" << std::endl;
 	return true;
 }
 
 int App::run() {
+	// main loop
 	SDL_Event event;
 
 	for( ;; ) {
+
+		// handle events
 	  while( SDL_PollEvent( &event ) ) {
 	    switch( event.type ) {
 	    	case SDL_QUIT:  return 0; break; // exit app
@@ -81,6 +86,7 @@ int App::run() {
 	          break;
 	     }
 	  }
+
 		onRender();
 		SDL_GL_SwapWindow( m_Window );
 		SDL_Delay( 1 );
@@ -90,10 +96,13 @@ int App::run() {
 void App::onRender() {
 	 glClear( GL_COLOR_BUFFER_BIT );
 
+	 m_Renderer->start();
+	 m_Renderer->push(m_Sprite);
+	 m_Renderer->flush();
+	 m_Renderer->stop();
+
   //glBindVertexArray( vao );
   //glDrawArrays( GL_TRIANGLES, 0, 6 );
-
-
 }
 
 }

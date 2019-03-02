@@ -13,7 +13,7 @@ public:
 	Vec3() :x(0), y(0), z(0) {}
 	Vec3(T x, T y, T z) : x(x), y(y), z(z) {}
 	Vec3(const Vec3& v) : x(v.x), y(v.y), z(v.z) {}
-	
+
 	Vec3& operator=(const Vec3& v) {
 		x = v.x; y = v.y; z = v.z;
 		return *this;

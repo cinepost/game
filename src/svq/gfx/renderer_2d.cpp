@@ -1,3 +1,4 @@
+#include <iostream>
 #include "svq/gfx/renderer_2d.h"
 
 namespace svq{ namespace gfx{
@@ -25,7 +26,7 @@ Renderer_2D::~Renderer_2D() {
 	delete m_IndexBuffer;
 	delete m_VertexArray;
 	delete m_Framebuffer;
-	//delete m_ScreenQuad;
+	delete m_ScreenQuad;
 }
 
 
@@ -37,7 +38,7 @@ void Renderer_2D::init() {
 	BufferLayout layout;
 	layout.push<math::Vec3f>("POSITION"); // Position
 	layout.push<math::Vec2f>("TEXCOORD"); // UV
-	layout.push<float>("ID"); // Texture Index
+	layout.push<byte>("ID"); // Texture Index
 	layout.push<float>("COLOR", 4, true); // Color
 	buffer->setLayout(layout);
 
@@ -82,7 +83,8 @@ void Renderer_2D::push(const Renderable_2D* renderable){
 	const std::vector<math::Vec2f>& uv = renderable->getUVs();
 	const Texture* texture = renderable->getTexture();
 
-	float textureSlot = 0.0f;
+	//float textureSlot = 0.0f;
+	unsigned char textureSlot = 0;
 	//if (texture)
 	//	textureSlot = submitTexture(renderable->getTexture());
 
@@ -97,7 +99,8 @@ void Renderer_2D::push(const Renderable_2D* renderable){
 	//}
 
 	//math::Vec3f vertex = *m_TransformationBack * min;
-	//m_Buffer->vertex = vertex;
+	math::Vec3f vertex(0, 0, 0);
+	m_Buffer->vertex = vertex;
 	m_Buffer->uv = uv[0];
 	//m_Buffer->mask_uv = maskTransform * vertex;
 	m_Buffer->texture_id = textureSlot;
@@ -106,7 +109,7 @@ void Renderer_2D::push(const Renderable_2D* renderable){
 	m_Buffer++;
 
 	//vertex = *m_TransformationBack * vec3(max.x, min.y);
-	//m_Buffer->vertex = vertex;
+	m_Buffer->vertex = vertex;
 	m_Buffer->uv = uv[1];
 	//m_Buffer->mask_uv = maskTransform * vertex;
 	m_Buffer->texture_id = textureSlot;
@@ -115,7 +118,7 @@ void Renderer_2D::push(const Renderable_2D* renderable){
 	m_Buffer++;
 
 	//vertex = *m_TransformationBack * max;
-	//m_Buffer->vertex = vertex;
+	m_Buffer->vertex = vertex;
 	m_Buffer->uv = uv[2];
 	//m_Buffer->mask_uv = maskTransform * vertex;
 	m_Buffer->texture_id = textureSlot;
@@ -124,7 +127,7 @@ void Renderer_2D::push(const Renderable_2D* renderable){
 	m_Buffer++;
 
 	//vertex = *m_TransformationBack * vec3(min.x, max.y);
-	//m_Buffer->vertex = vertex;
+	m_Buffer->vertex = vertex;
 	m_Buffer->uv = uv[3];
 	//m_Buffer->mask_uv = maskTransform * vertex;
 	m_Buffer->texture_id = textureSlot;
@@ -133,6 +136,83 @@ void Renderer_2D::push(const Renderable_2D* renderable){
 	m_Buffer++;
 
 	m_IndexCount += 6;
+}
+
+void Renderer_2D::flush() {
+	m_VertexArray->bind(); std::cout << "m_VertexArray->bind();\n";
+	m_IndexBuffer->bind();
+	//m_VertexArray->draw(m_IndexCount);
+	m_IndexBuffer->unbind();
+	m_VertexArray->unbind(); std::cout << "m_VertexArray->unbind();\n";
+
+	m_IndexCount = 0;
+
+	/*
+	if (m_Target == RenderTarget::BUFFER) {
+			assert(false); // Currently unsupported
+
+			// Post Effects pass should go here!
+			
+			//if (s_PostEffectsEnabled && m_PostEffectsEnabled)
+			//	m_PostEffects->renderPostEffects(m_Framebuffer, m_PostEffectsBuffer, m_ScreenQuad, m_IBO);
+
+			// Display Framebuffer - potentially move to Framebuffer class
+			
+			//glBindFramebuffer(GL_FRAMEBUFFER, m_ScreenBuffer);
+			//Renderer::setViewport(0, 0, m_ScreenSize.x, m_ScreenSize.y);
+			//Renderer::setBlendFunction(RendererBlendFunction::SOURCE_ALPHA, RendererBlendFunction::ONE_MINUS_SOURCE_ALPHA);
+			//m_FramebufferMaterial->bind();
+
+			// TODO: None of this should be done here
+			glActiveTexture(GL_TEXTURE0);
+			//if (m_PostEffectsEnabled)
+			//	m_PostEffectsBuffer->getTexture()->bind(m_FramebufferMaterial->getShader());
+			//else
+			//	m_Framebuffer->getTexture()->bind(m_FramebufferMaterial->getShader());
+
+			//m_ScreenQuad->bind();
+			m_IndexBuffer->bind();
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+			m_IndexBuffer->unbind();
+			//m_ScreenQuad->Unbind();
+		}
+		*/
+}
+
+void Renderer_2D::start() {
+	if (m_Target == RenderTarget::BUFFER) {
+			assert(false); // Currently Unsupported
+
+			if (m_ViewportSize != m_Framebuffer->getSize()) {
+				delete m_Framebuffer;
+				m_Framebuffer = FrameBuffer::create(m_ViewportSize);
+				
+				if (m_PostEffectsEnabled) {
+					delete m_PostEffectsBuffer;
+					m_PostEffectsBuffer = FrameBuffer::create(m_ViewportSize);
+				}
+			}
+
+			if (m_PostEffectsEnabled) {
+				m_PostEffectsBuffer->bind();
+				m_PostEffectsBuffer->clear();
+			}
+
+			m_Framebuffer->bind();
+			m_Framebuffer->clear(); // TODO: Clear somewhere else, since this basically limits to one draw call
+			//Renderer_2D::setBlendFunction(RendererBlendFunction::ONE, RendererBlendFunction::ZERO);
+	} else {
+			//glBindFramebuffer(GL_FRAMEBUFFER, m_ScreenBuffer);
+			//Renderer_2D::setViewport(0, 0, m_ScreenSize.x, m_ScreenSize.y);
+	}
+	
+	m_VertexArray->bind();
+	m_Buffer = m_VertexArray->getBuffer()->getPointer<VertexData>();
+}
+
+void Renderer_2D::stop() {
+	m_VertexArray->getBuffer()->releasePointer();
+	m_VertexArray->unbind();
 }
 
 }}

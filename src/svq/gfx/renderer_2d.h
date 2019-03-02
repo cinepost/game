@@ -22,6 +22,8 @@ class Renderer_2D {
     	Renderer_2D(const math::Vec2<uint>& screenSize);
     	~Renderer_2D();
 
+    	void start();
+    	void stop();
     	void push(const Renderable_2D* renderable);
     	void flush();
 
@@ -34,6 +36,11 @@ class Renderer_2D {
 			IndexBuffer* m_IndexBuffer;
 			VertexData* m_Buffer;
 			FrameBuffer* m_Framebuffer;
+			FrameBuffer* m_PostEffectsBuffer;
+
+			VertexArray* m_ScreenQuad;
+
+			bool m_PostEffectsEnabled;
 
 			uint m_IndexCount;
 			math::Vec2<uint> m_ScreenSize, m_ViewportSize;
