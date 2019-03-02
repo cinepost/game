@@ -5,9 +5,12 @@ namespace svq{
 	
 App::App(bool retrocore) {
 	m_Retrocore = retrocore;
+	m_Renderer = nullptr;
 }
 
 App::~App() {
+	if (m_Renderer != nullptr)
+		delete m_Renderer;
 	if (!m_Retrocore) {
 		// SDL cleanup
 		SDL_GL_DeleteContext( m_Context );
@@ -17,15 +20,15 @@ App::~App() {
 }
 
 bool App::init() {
+	static const int width = 480;
+  static const int height = 272;
+
 	if (!m_Retrocore) {
 		// Standalone SDL version
 		if (SDL_Init( SDL_INIT_VIDEO ) != 0) {
 			std::cerr << "Error: " << SDL_GetError() << std::endl;
 			return false;
   	}
-
-    static const int width = 480;
-    static const int height = 272;
 
   	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
     SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
@@ -46,46 +49,49 @@ bool App::init() {
     glViewport( 0, 0, width, height );
 
 	}
+
+	// testing renderer
+	m_Renderer = new gfx::Renderer_2D( width, height);
+
 	std::cout << "app init ok" << std::endl;
 	return true;
 }
 
-void App::run() {
+int App::run() {
 	for( ;; ) {
+		SDL_Event event;
+	  while( SDL_PollEvent( &event ) ) {
+	    switch( event.type ) {
+	    	case SDL_QUIT:  return 0; break; // exit app
+	      case SDL_KEYDOWN:
+					switch (event.key.keysym.sym) {
+						case SDLK_ESCAPE: return 0; break; //exit app
+						case SDLK_F11: // toggle fullscreen
+							if(!isFullscreen){
+								SDL_SetWindowFullscreen(m_Window, SDL_WINDOW_FULLSCREEN);
+								isFullscreen = true;
+							} else {
+							    SDL_SetWindowFullscreen(m_Window, 0);
+							    isFullscreen = false;
+							}
+							break;
+	          }
+	          break;
+	     }
+	  }
 		onRender();
+		SDL_GL_SwapWindow( m_Window );
 		SDL_Delay( 1 );
   }
 }
 
-int App::onRender() {
-	std::cout << "on render" << std::endl;
-  glClear( GL_COLOR_BUFFER_BIT );
-
-  SDL_Event event;
-  while( SDL_PollEvent( &event ) ) {
-    switch( event.type ) {
-      case SDL_KEYDOWN:
-				switch (event.key.keysym.sym) {
-					case SDLK_ESCAPE: return 0; break;
-					case SDLK_F11:
-						if(!isFullscreen){
-							SDL_SetWindowFullscreen(m_Window, SDL_WINDOW_FULLSCREEN);
-							isFullscreen = true;
-						} else {
-						    SDL_SetWindowFullscreen(m_Window, 0);
-						    isFullscreen = false;
-						}
-						break;
-          }
-          break;
-     }
-  }
+void App::onRender() {
+	 glClear( GL_COLOR_BUFFER_BIT );
 
   //glBindVertexArray( vao );
   //glDrawArrays( GL_TRIANGLES, 0, 6 );
 
-  SDL_GL_SwapWindow( m_Window );
-  return 0;
+
 }
 
 }

@@ -36,7 +36,7 @@ void Renderer_2D::init() {
 	m_VertexArray = VertexArray::create();
 	m_VertexArray->pushBuffer(buffer);
 
-	uint* indices = spnew uint[RENDERER_INDICES_SIZE];
+	uint* indices = new uint[RENDERER_INDICES_SIZE];
 
 	int32 offset = 0;
 
@@ -50,7 +50,7 @@ void Renderer_2D::init() {
 	m_VertexArray->unbind();
 
 	// Setup Framebuffer
-	m_Framebuffer = Framebuffer2D::create(m_ViewportSize.x, m_ViewportSize.y);
+	m_Framebuffer = FrameBuffer::create(m_ViewportSize.x, m_ViewportSize.y);
 
 	//m_FramebufferMaterial = new Material(ShaderFactory::SimpleShader());
 	//m_FramebufferMaterial->SetUniform("pr_matrix", maths::mat4::Orthographic(0, (float)m_ScreenSize.x, (float)m_ScreenSize.y, 0, -1.0f, 1.0f));

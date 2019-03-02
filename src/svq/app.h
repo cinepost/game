@@ -10,6 +10,7 @@
 #include <SDL_opengl.h>
 
 #include "svq/api.h"
+#include "svq/gfx/renderer_2d.h"
 
 namespace svq{
 	
@@ -19,15 +20,17 @@ class SVQ_API App {
 		~App();
 		bool init();
 
-		void run();
-		int onRender();
+		int run();
+		void onRender();
 
 	private:
-		SDL_Window * m_Window;
+		SDL_Window *m_Window;
     SDL_GLContext m_Context;
 
 		bool m_Retrocore;
 		bool isFullscreen = false;
+
+		gfx::Renderer_2D *m_Renderer;
 };
 
 }

@@ -79,11 +79,16 @@ class SVQ_API Texture {
 		virtual void bind(uint slot = 0) const = 0;
 		virtual void unbind(uint slot = 0) const = 0;
 
+		virtual void setData(const void* pixels) = 0;
+		virtual void setData(uint color) = 0;
+
 		virtual const std::string& getName() const = 0;
 		virtual const std::string& getFilepath() const = 0;
+
 	public:
 		inline static void setWrap(TextureWrap mode) { s_WrapMode = mode; }
 		inline static void setFilter(TextureFilter mode) { s_FilterMode = mode; }
+
 	public:
 		static byte getStrideFromFormat(TextureFormat format);
 

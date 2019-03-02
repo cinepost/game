@@ -3,6 +3,7 @@
 
 #include "svq/api.h"
 #include "svq/math/vec2.h"
+#include "svq/gfx/frame_buffer.h"
 #include "svq/gfx/vertex_array.h"
 #include "svq/gfx/index_buffer.h"
 #include "svq/gfx/renderable_2d.h"
@@ -32,7 +33,7 @@ class Renderer_2D {
     	VertexArray* m_VertexArray;
 			IndexBuffer* m_IndexBuffer;
 			VertexData* m_Buffer;
-			Framebuffer2D* m_Framebuffer;
+			FrameBuffer* m_Framebuffer;
 
 			uint m_IndexCount;
 			math::Vec2<uint> m_ScreenSize, m_ViewportSize;

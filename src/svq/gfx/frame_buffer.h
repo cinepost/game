@@ -4,17 +4,19 @@
 #include "svq/api.h"
 #include "svq/types.h"
 #include "svq/math/vec4.h"
+#include "svq/gfx/texture.h"
 //#include "svq/Framebuffer.h"
 
 namespace svq{ namespace gfx{
 
-class SVQ_API Framebuffer  {
+class SVQ_API FrameBuffer  {
 	public:
 		virtual void setClearColor(const math::Vec4f& color) = 0;		
-		static Framebuffer* create(uint width, uint height);
+		static FrameBuffer* create(uint width, uint height);
 
 		virtual uint getWidth() const = 0;
 		virtual uint getHeight() const = 0;
+		virtual Texture* getTexture() const = 0;
 
 		virtual void bind() const = 0;
 		virtual void unbind() const = 0;
@@ -22,7 +24,6 @@ class SVQ_API Framebuffer  {
 
 	private:
 		virtual void init() {};
-
 };
 
 }}

@@ -11,7 +11,7 @@ int main( int argc, char * argv[] ) {
         return -1;
     }
 
-    app.run();
+    int ret = app.run();
 
-    return 0;
+    return ret;
 }

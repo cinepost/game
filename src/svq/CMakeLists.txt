@@ -1,16 +1,20 @@
 set ( SOURCES
 	./app.cpp
 	./gfx/utils.cpp
+	./gfx/index_buffer.cpp
 	./gfx/vertex_buffer.cpp
-	#./gfx/frame_buffer.cpp
+	./gfx/frame_buffer.cpp
+	./gfx/vertex_array.cpp
 	./gfx/texture.cpp
-	#./gfx/renderable_2d.cpp
+	./gfx/renderable_2d.cpp
 	./gfx/sprite.cpp
-	#./gfx/renderer_2d.cpp
+	./gfx/renderer_2d.cpp
 	./gfx/buffer_layout.cpp
+	./gfx/ogl/gl_texture.cpp
 	./gfx/ogl/gl_vertex_buffer.cpp
 	./gfx/ogl/gl_index_buffer.cpp
-	#./gfx/ogl/gl_frame_buffer.cpp
+	./gfx/ogl/gl_frame_buffer.cpp
+	./gfx/ogl/gl_vertex_array.cpp
 	./gfx/ogl/gl_sprite.cpp
 	./gfx/ogl/gl_shader.cpp
 	./gfx/ogl/gl_program.cpp
