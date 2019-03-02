@@ -4,13 +4,14 @@ namespace svq{
 
 	
 App::App(bool retrocore) {
+	isFullscreen = false;
 	m_Retrocore = retrocore;
 	m_Renderer = nullptr;
 }
 
 App::~App() {
-	if (m_Renderer != nullptr)
-		delete m_Renderer;
+	delete m_Renderer;
+
 	if (!m_Retrocore) {
 		// SDL cleanup
 		SDL_GL_DeleteContext( m_Context );
@@ -58,8 +59,9 @@ bool App::init() {
 }
 
 int App::run() {
+	SDL_Event event;
+
 	for( ;; ) {
-		SDL_Event event;
 	  while( SDL_PollEvent( &event ) ) {
 	    switch( event.type ) {
 	    	case SDL_QUIT:  return 0; break; // exit app

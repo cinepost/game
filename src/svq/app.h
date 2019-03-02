@@ -28,7 +28,7 @@ class SVQ_API App {
     SDL_GLContext m_Context;
 
 		bool m_Retrocore;
-		bool isFullscreen = false;
+		bool isFullscreen;
 
 		gfx::Renderer_2D *m_Renderer;
 };

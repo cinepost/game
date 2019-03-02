@@ -1,7 +1,6 @@
 #include "svq/gfx/renderer_2d.h"
 
-namespace svq {
-namespace gfx {
+namespace svq{ namespace gfx{
 
 #define RENDERER_MAX_SPRITES	60000
 #define RENDERER_SPRITE_SIZE	RENDERER_VERTEX_SIZE * 4
@@ -22,7 +21,16 @@ Renderer_2D::Renderer_2D(const math::Vec2<uint>& screenSize)
 }
 
 
+Renderer_2D::~Renderer_2D() {
+	delete m_IndexBuffer;
+	delete m_VertexArray;
+	delete m_Framebuffer;
+	//delete m_ScreenQuad;
+}
+
+
 void Renderer_2D::init() {
+
 	VertexBuffer* buffer = VertexBuffer::create(BufferType::DYNAMIC);
 	buffer->resize(RENDERER_BUFFER_SIZE);
 
@@ -127,11 +135,4 @@ void Renderer_2D::push(const Renderable_2D* renderable){
 	m_IndexCount += 6;
 }
 
-Renderer_2D::~Renderer_2D() {
-	delete m_IndexBuffer;
-	delete m_VertexArray;
-	//delete m_ScreenQuad;
-}
-
-}
-}
+}}

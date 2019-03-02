@@ -11,7 +11,7 @@
 
 #include "svq/gfx/ogl/gl_program.h"
 
-namespace svq { namespace gfx {
+namespace svq{ namespace gfx{
 
 
 class Program_Manager {
@@ -27,6 +27,6 @@ class Program_Manager {
     static std::map<std::string, Program*> programs;
 };
 
-} }
+}}
 
 #endif // GL_PROGRAM_MANAGER__H

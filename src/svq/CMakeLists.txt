@@ -1,6 +1,6 @@
 set ( SOURCES
 	./app.cpp
-	./gfx/utils.cpp
+	#./gfx/utils.cpp
 	./gfx/index_buffer.cpp
 	./gfx/vertex_buffer.cpp
 	./gfx/frame_buffer.cpp
@@ -15,7 +15,6 @@ set ( SOURCES
 	./gfx/ogl/gl_index_buffer.cpp
 	./gfx/ogl/gl_frame_buffer.cpp
 	./gfx/ogl/gl_vertex_array.cpp
-	./gfx/ogl/gl_sprite.cpp
 	./gfx/ogl/gl_shader.cpp
 	./gfx/ogl/gl_program.cpp
 	./gfx/ogl/gl_program_manager.cpp

@@ -6,8 +6,7 @@
 
 //#include "svq/system/Memory.h"
 
-namespace svq {
-namespace gfx {
+namespace svq{ namespace gfx{
 
 FrameBuffer* FrameBuffer::create(uint width, uint height) {
 	#ifdef _SVQ_OPENGL
@@ -17,5 +16,4 @@ FrameBuffer* FrameBuffer::create(uint width, uint height) {
 	return nullptr;
 }
 
-}
-}
+}}

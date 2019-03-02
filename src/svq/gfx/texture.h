@@ -6,8 +6,7 @@
 #include "svq/api.h"
 #include "svq/types.h"
 
-namespace svq {
-namespace gfx {
+namespace svq{ namespace gfx{
 
 enum class SVQ_API TextureWrap {
 	NONE = 0,
@@ -37,26 +36,22 @@ struct SVQ_API TextureParameters {
 	TextureFilter filter;
 	TextureWrap wrap;
 
-	TextureParameters()
-	{
+	TextureParameters() {
 		format = TextureFormat::RGBA;
 		filter = TextureFilter::LINEAR;
 		wrap = TextureWrap::CLAMP;
 	}
 
 	TextureParameters(TextureFormat format, TextureFilter filter, TextureWrap wrap)
-		: format(format), filter(filter), wrap(wrap)
-	{
+		: format(format), filter(filter), wrap(wrap) {
 	}
 
 	TextureParameters(TextureFilter filter)
-		: format(TextureFormat::RGBA), filter(filter), wrap(TextureWrap::CLAMP)
-	{
+		: format(TextureFormat::RGBA), filter(filter), wrap(TextureWrap::CLAMP) {
 	}
 
 	TextureParameters(TextureFilter filter, TextureWrap wrap)
-		: format(TextureFormat::RGBA), filter(filter), wrap(wrap)
-	{
+		: format(TextureFormat::RGBA), filter(filter), wrap(wrap) {
 	}
 };
 
@@ -97,7 +92,6 @@ class SVQ_API Texture {
 		static TextureFilter s_FilterMode;
 };
 
-}
-}
+}}
 
 #endif // TEXTURE__H
