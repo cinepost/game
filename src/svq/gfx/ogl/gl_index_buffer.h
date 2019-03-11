@@ -2,7 +2,6 @@
 #define GL_INDEX_BUFFER__H
 
 #include "svq/gfx/index_buffer.h"
-//#include "GLCommon.h"
 
 namespace svq {
 namespace gfx {
@@ -18,7 +17,7 @@ class GL_IndexBuffer : public IndexBuffer {
 		uint getCount() const;
 
 	private:
-		uint m_Handle;
+		GLuint m_Handle;
 		uint m_Count;
 };
 

@@ -1,3 +1,4 @@
+#include "svq/gfx/ogl/gl_common.h"
 #include "svq/gfx/ogl/gl_vertex_array.h"
 
 namespace svq{ namespace gfx{
@@ -19,7 +20,7 @@ void GL_VertexArray::unbind() const{
 }
 
 void GL_VertexArray::draw(uint count) const {
-	glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, NULL);
+	GL_CALL(glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, NULL));
 }
 
-} }
+}}

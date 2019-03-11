@@ -10,6 +10,8 @@ namespace gfx {
 
 class VertexArray {
 	public:
+		virtual ~VertexArray(){};
+
 		static VertexArray* create();
 
 		virtual VertexBuffer* getBuffer(uint index = 0) = 0;
@@ -17,12 +19,7 @@ class VertexArray {
 		virtual void bind() const = 0;
 		virtual void unbind() const = 0;
 		virtual void draw(uint count) const = 0;
-
-	private:
-		uint m_ID;
-		std::vector<VertexBuffer*> m_Buffers;
-
-	};
+};
 
 }
 }

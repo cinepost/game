@@ -1,11 +1,12 @@
 #ifndef APP__H
 #define APP__H
 
-#define GL_GLEXT_PROTOTYPES
+//#define GL_GLEXT_PROTOTYPES
 
 #include <vector>
 #include <iostream>
 
+#define GL_GLEXT_PROTOTYPES
 #include <SDL.h>
 #include <SDL_opengl.h>
 
@@ -22,6 +23,7 @@ class SVQ_API App {
 		bool init();
 
 		int run();
+		void resize(uint width, uint height);
 		void onRender();
 
 	private:
@@ -34,6 +36,8 @@ class SVQ_API App {
 		// test stuff
 		gfx::Renderer_2D *m_Renderer;
 		gfx::Sprite *m_Sprite;
+
+		float tst;
 };
 
 }

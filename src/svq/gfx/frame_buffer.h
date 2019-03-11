@@ -12,8 +12,9 @@ namespace svq{ namespace gfx{
 
 class SVQ_API FrameBuffer  {
 	public:
+		virtual ~FrameBuffer(){};
 		static FrameBuffer* create(uint width, uint height);
-		static FrameBuffer* create(math::Vec2<uint> size);
+		static FrameBuffer* create(math::Vec2<uint> size);	
 
 		virtual void setClearColor(const math::Vec4f& color) = 0;		
 

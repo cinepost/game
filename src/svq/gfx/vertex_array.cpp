@@ -11,6 +11,7 @@ VertexArray* VertexArray::create() {
 	return new GL_VertexArray();
 	#else
 	//return new DX_VertexArray();
+	return nullptr;
 	#endif
 }
 

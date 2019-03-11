@@ -22,6 +22,7 @@ class GL_VertexBuffer : public VertexBuffer {
 
 	protected:
 		void* getPointerInternal() override;
+		static uint bufferUsageToOpenGL(BufferType type);
 
 	private:
 		uint m_Handle;
@@ -29,6 +30,7 @@ class GL_VertexBuffer : public VertexBuffer {
 		uint m_Size;
 		BufferLayout m_Layout;
 };
+
 
 }
 }

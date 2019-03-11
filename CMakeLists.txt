@@ -47,6 +47,7 @@ include_directories(
 
 add_definitions( -D_GAME_RESOURCES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/resources/")
 add_definitions( -D_SVQ_OPENGL=ON)
+add_definitions( -D_DEBUG=ON)
 
 add_subdirectory( src/svq ) # sovoq engine library
 add_subdirectory( src/sovoqexe ) # standalone sovoq engine executable

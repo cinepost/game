@@ -12,6 +12,7 @@ enum class BufferType {
 
 class VertexBuffer {
 	public:
+		virtual ~VertexBuffer() {};
 		static VertexBuffer* create(BufferType type = BufferType::STATIC);
 
 		virtual void resize(uint size) = 0;
@@ -24,8 +25,7 @@ class VertexBuffer {
 		virtual void unbind() = 0;
 
 		template<typename T>
-		T* getPointer()
-		{
+		T* getPointer(){
 			return (T*)getPointerInternal();
 		}
 	

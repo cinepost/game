@@ -8,6 +8,7 @@ namespace gfx {
 
 class IndexBuffer {
 	public:
+		virtual ~IndexBuffer() {};
 		static IndexBuffer* create(uint16* data, uint count);
 		static IndexBuffer* create(uint* data, uint count);
 

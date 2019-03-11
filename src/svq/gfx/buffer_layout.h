@@ -33,10 +33,10 @@ class SVQ_API BufferLayout {
 
 		template<typename T>
 		void push(const std::string& name, uint count = 1, bool normalized = false) {
-			assert(false); //unknown type
+			assert(false); // we should not be here really
 		}
 
-		inline const std::vector<BufferElement>& getLayout() const { return m_Layout; }
+		inline const std::vector<BufferElement>& getElements() const { return m_Layout; }
 		inline uint getStride() const { return m_Size; }
 
 	private:

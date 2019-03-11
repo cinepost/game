@@ -1,106 +1,134 @@
-#include <stdexcept>
-#include <fstream>
-#include <string>
-#include <cassert>
+#include <string> 
+#include <iostream> 
 #include <sstream>
+#include <fstream>
+#include <streambuf> 
 
+//#include <boost/tokenizer.hpp>
+//#include <boost/token_iterator.hpp>
+
+#include "svq/gfx/ogl/gl_common.h"
 #include "svq/gfx/ogl/gl_shader.h"
 
-namespace svq {
-namespace gfx {
+namespace svq{ namespace gfx{
 
-Shader::Shader(GLenum shaderType, const std::string& shaderCode) :
-    _object(0),
-    _refCount(NULL)
-{
-    //create the shader object
-    _object = glCreateShader(shaderType);
-    if(_object == 0)
-        throw std::runtime_error("glCreateShader failed");
-    
-    //set the source code
-    const char* code = shaderCode.c_str();
-    glShaderSource(_object, 1, (const GLchar**)&code, NULL);
-    
-    //compile
-    glCompileShader(_object);
-    
-    //throw exception if compile error occurred
-    GLint status;
-    glGetShaderiv(_object, GL_COMPILE_STATUS, &status);
-    if (status == GL_FALSE) {
-        std::string msg("Compile failure in shader:\n");
-        
-        GLint infoLogLength;
-        glGetShaderiv(_object, GL_INFO_LOG_LENGTH, &infoLogLength);
-        char* strInfoLog = new char[infoLogLength + 1];
-        glGetShaderInfoLog(_object, infoLogLength, NULL, strInfoLog);
-        msg += strInfoLog;
-        delete[] strInfoLog;
-        
-        glDeleteShader(_object); _object = 0;
-        throw std::runtime_error(msg);
-    }
-    
-    _refCount = new unsigned;
-    *_refCount = 1;
+enum class GL_ShaderType {
+	UNKNOWN = -1, 
+	VERTEX = 0, 
+	FRAGMENT = 1
+};
+
+
+GL_Shader::GL_Shader(const std::string& name, const std::string& shaderSourcePath) : m_Name(name) {
+	m_Sources = parseSources(shaderSourcePath);
+	init();
 }
 
-Shader::Shader(const Shader& other) :
-    _object(other._object),
-    _refCount(other._refCount)
-{
-    _retain();
+GL_Shader::GL_Shader(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource) : m_Name(name) {
+	m_Sources.vertexSource = vertexSource;
+	m_Sources.fragmentSource = fragmentSource;
+	init();
 }
 
-Shader::~Shader() {
-    //_refCount will be NULL if constructor failed and threw an exception
-    if(_refCount) _release();
+GL_Shader::~GL_Shader() { }
+
+void GL_Shader::init() {
+	//m_VSUserUniformBuffer = nullptr;
+	//m_PSUserUniformBuffer = nullptr;
+
+	GLShaderErrorInfo error;
+	m_Handle = compile(m_Sources, error);
+	if (!m_Handle)
+		std::cerr << error.message[error.shader] << std::endl;
+	assert(m_Handle);
+	//ResolveUniforms();
+	//ValidateUniforms();
 }
 
-GLuint Shader::glShader() const {
-    return _object;
+void GL_Shader::shutdown() {
+	GL_CALL(glDeleteProgram(m_Handle));
 }
 
-Shader& Shader::operator = (const Shader& other) {
-    _release();
-    _object = other._object;
-    _refCount = other._refCount;
-    _retain();
-    return *this;
+ShaderSources GL_Shader::parseSources(const std::string& shaderSourcePath) {
+	GL_ShaderType type = GL_ShaderType::UNKNOWN;
+	std::string line;
+	std::stringstream shaderSources[2];
+
+	std::ifstream stream(shaderSourcePath);
+
+	while (std::getline(stream, line)) {
+		if (line.find("#shader ") != std::string::npos) {
+			if (line.find("vertex") != std::string::npos)
+				type = GL_ShaderType::VERTEX;
+			else if (line.find("fragment") != std::string::npos)
+				type = GL_ShaderType::FRAGMENT;	
+		} else {
+			shaderSources[(int)type] << line << std::endl;
+		}
+	}
+
+	return {shaderSources[0].str(), shaderSources[1].str()};
 }
 
-Shader Shader::shaderFromFile(const std::string& filePath, GLenum shaderType) {
-    std::cout << "reading shader file " << filePath << std::endl;
-    //open file
-    std::ifstream f;
-    f.open(filePath.c_str(), std::ios::in | std::ios::binary);
-    if(!f.is_open()){
-        throw std::runtime_error(std::string("Failed to open file: ") + filePath);
-    }
+uint GL_Shader::compile(ShaderSources sources, GLShaderErrorInfo error) {
+	const char* vertexSource = sources.vertexSource.c_str();
+	const char* fragmentSource = sources.fragmentSource.c_str();
 
-    //read whole file into stringstream buffer
-    std::stringstream buffer;
-    buffer << f.rdbuf();
+	GL_CALL(uint program = glCreateProgram());
+	GL_CALL(GLuint vertex = glCreateShader(GL_VERTEX_SHADER));
+	GL_CALL(GLuint fragment = glCreateShader(GL_FRAGMENT_SHADER));
 
-    //return new shader
-    Shader shader(shaderType, buffer.str());
-    return shader;
+	GL_CALL(glShaderSource(vertex, 1, &vertexSource, NULL));
+	GL_CALL(glCompileShader(vertex));
+
+	GLint result;
+	GL_CALL(glGetShaderiv(vertex, GL_COMPILE_STATUS, &result));
+	if (result == GL_FALSE) {
+		std::cerr << "Failed to compile vertex shader" << std::endl;
+		GL_CALL(glDeleteShader(vertex));
+		return 0;
+	}
+
+	GL_CALL(glShaderSource(fragment, 1, &fragmentSource, NULL));
+	GL_CALL(glCompileShader(fragment));
+
+	GL_CALL(glGetShaderiv(fragment, GL_COMPILE_STATUS, &result));
+	if (result == GL_FALSE) {
+		std::cerr << "Failed to compile fragment shader" << std::endl;
+		GL_CALL(glDeleteShader(fragment));
+		return 0;
+	}
+
+	GL_CALL(glAttachShader(program, vertex));
+	GL_CALL(glAttachShader(program, fragment));
+
+	GL_CALL(glLinkProgram(program));
+	GL_CALL(glValidateProgram(program));
+
+	GL_CALL(glDetachShader(program, vertex));
+	GL_CALL(glDetachShader(program, fragment));
+
+	GL_CALL(glDeleteShader(vertex));
+	GL_CALL(glDeleteShader(fragment));
+
+	return program;
 }
 
-void Shader::_retain() {
-    assert(_refCount);
-    *_refCount += 1;
+void GL_Shader::bind() const {
+	GL_CALL(glUseProgram(m_Handle));
 }
 
-void Shader::_release() {
-    assert(_refCount && *_refCount > 0);
-    *_refCount -= 1;
-    if(*_refCount == 0){
-        glDeleteShader(_object); _object = 0;
-        delete _refCount; _refCount = NULL;
-    }
+void GL_Shader::unbind() const {
+	GL_CALL(glUseProgram(0));
 }
 
+const void GL_Shader::setUnifromMatrix4fv(const std::string &uniform_name, const void *value) const {
+	GLint uniform_location = glGetUniformLocation(m_Handle, uniform_name.c_str());
+	GLenum err = glGetError();
+  	
+	GL_CALL(glUseProgram(m_Handle));
+	GL_CALL(glUniformMatrix4fv(uniform_location, 1, GL_FALSE, (const GLfloat *)value));
+	
 }
-}
+
+}}

@@ -1,3 +1,4 @@
+#include "svq/gfx/ogl/gl_common.h"
 #include "svq/gfx/ogl/gl_texture.h"
 
 //#include <GL/glew.h>
@@ -67,16 +68,16 @@ uint GL_Texture::load() {
 	}
 	
 	uint handle;
-	glGenTextures(1, &handle);
-	glBindTexture(GL_TEXTURE_2D, handle);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, m_Parameters.filter == TextureFilter::LINEAR ? GL_LINEAR_MIPMAP_LINEAR : GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, m_Parameters.filter == TextureFilter::LINEAR ? GL_LINEAR : GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureWrapToGL(s_WrapMode));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureWrapToGL(s_WrapMode));
+	GL_CALL(glGenTextures(1, &handle));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, handle));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, m_Parameters.filter == TextureFilter::LINEAR ? GL_LINEAR_MIPMAP_LINEAR : GL_NEAREST));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, m_Parameters.filter == TextureFilter::LINEAR ? GL_LINEAR : GL_NEAREST));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureWrapToGL(s_WrapMode)));
+	GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureWrapToGL(s_WrapMode)));
 
-	glTexImage2D(GL_TEXTURE_2D, 0, textureFormatToGL(m_Parameters.format), m_Width, m_Height, 0, textureFormatToGL(m_Parameters.format), GL_UNSIGNED_BYTE, pixels);
-	glGenerateMipmap(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, textureFormatToGL(m_Parameters.format), m_Width, m_Height, 0, textureFormatToGL(m_Parameters.format), GL_UNSIGNED_BYTE, pixels));
+	GL_CALL(glGenerateMipmap(GL_TEXTURE_2D));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
 
 	if (pixels != nullptr)
 		delete[] pixels;
@@ -85,8 +86,8 @@ uint GL_Texture::load() {
 }
 
 void GL_Texture::setData(const void* pixels) {
-	glBindTexture(GL_TEXTURE_2D, m_Handle);
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_Width, m_Height, textureFormatToGL(m_Parameters.format), GL_UNSIGNED_BYTE, pixels);
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, m_Handle));
+	GL_CALL(glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_Width, m_Height, textureFormatToGL(m_Parameters.format), GL_UNSIGNED_BYTE, pixels));
 }
 
 void GL_Texture::setData(uint color) {
@@ -107,13 +108,13 @@ void GL_Texture::setData(uint color) {
 }
 
 void GL_Texture::bind(uint slot) const {
-	glActiveTexture(GL_TEXTURE0 + slot);
-	glBindTexture(GL_TEXTURE_2D, m_Handle);
+	GL_CALL(glActiveTexture(GL_TEXTURE0 + slot));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, m_Handle));
 }
 
 void GL_Texture::unbind(uint slot) const {
-	glActiveTexture(GL_TEXTURE0 + slot);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	GL_CALL(glActiveTexture(GL_TEXTURE0 + slot));
+	GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
 }
 
 uint GL_Texture::textureFormatToGL(TextureFormat format) {

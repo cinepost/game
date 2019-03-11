@@ -8,17 +8,25 @@ set ( SOURCES
 	./gfx/texture.cpp
 	./gfx/renderable_2d.cpp
 	./gfx/sprite.cpp
+	./gfx/shader.cpp
 	./gfx/renderer_2d.cpp
 	./gfx/buffer_layout.cpp
+	# OpenGL
+	./gfx/ogl/gl_common.cpp
 	./gfx/ogl/gl_texture.cpp
 	./gfx/ogl/gl_vertex_buffer.cpp
 	./gfx/ogl/gl_index_buffer.cpp
 	./gfx/ogl/gl_frame_buffer.cpp
 	./gfx/ogl/gl_vertex_array.cpp
 	./gfx/ogl/gl_shader.cpp
-	./gfx/ogl/gl_program.cpp
-	./gfx/ogl/gl_program_manager.cpp
 )
+
+# GLEW libs
+find_package(GLEW REQUIRED)
+if (GLEW_FOUND)
+    include_directories(${GLEW_INCLUDE_DIRS})
+    link_libraries(${GLEW_LIBRARIES})
+endif()
 
 # SDL2 libs
 find_package( SDL2 REQUIRED )
@@ -39,11 +47,12 @@ set (CMAKE_CXX_STANDARD 11)
 
 add_library( sovoq_lib STATIC ${SOURCES} )
  
-target_link_libraries( sovoq_lib 
+target_link_libraries( sovoq_lib
 	${SDL2_LIBRARIES} 
 	${SDL2_IMAGE_LIBRARIES} 
 	${SDL2_MIXER_LIBRARIES} 
-	${OPENGL_LIBRARIES} 
+	${OPENGL_LIBRARIES}
+	${GLEW_LIBRARIES}
 	Boost::log
 	dl 
 )

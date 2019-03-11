@@ -1,24 +1,35 @@
 #include <iostream>
+
 #include "svq/gfx/renderer_2d.h"
+#include "svq/gfx/ogl/gl_common.h"
 
 namespace svq{ namespace gfx{
 
-#define RENDERER_MAX_SPRITES	60000
+#define RENDERER_MAX_SPRITES	1000
 #define RENDERER_SPRITE_SIZE	RENDERER_VERTEX_SIZE * 4
 #define RENDERER_BUFFER_SIZE	RENDERER_SPRITE_SIZE * RENDERER_MAX_SPRITES
 #define RENDERER_INDICES_SIZE	RENDERER_MAX_SPRITES * 6
 #define RENDERER_MAX_TEXTURES	32 - 1
 
+const uint g_RequiredSystemUniformsCount = 2;
+const std::string g_RequiredSystemUniforms[g_RequiredSystemUniformsCount] =
+{
+	"sys_ProjectionMatrix",
+	"sys_ViewMatrix"
+};
+
+const uint sys_ProjectionMatrixIndex = 0;
+const uint sys_ViewMatrixIndex = 1;
 
 Renderer_2D::Renderer_2D(uint width, uint height)
 		: m_IndexCount(0), m_ScreenSize(math::Vec2<uint>(width, height)), m_ViewportSize(math::Vec2<uint>(width, height)) {
-	init();
+	_init();
 }
 
 
 Renderer_2D::Renderer_2D(const math::Vec2<uint>& screenSize)
 		: m_IndexCount(0), m_ScreenSize(screenSize), m_ViewportSize(screenSize) {
-	init();
+	_init();
 }
 
 
@@ -27,23 +38,40 @@ Renderer_2D::~Renderer_2D() {
 	delete m_VertexArray;
 	delete m_Framebuffer;
 	delete m_ScreenQuad;
+	delete m_Shader;
 }
 
 
-void Renderer_2D::init() {
+void Renderer_2D::_init() {
+	m_Target = RenderTarget::SCREEN;
+
+	m_SystemUniforms.resize(g_RequiredSystemUniformsCount);
+
+	m_Shader = Shader::createFromFile("test_sprite", "/Users/max/dev/sovoq/resources/shaders/test_sprite.shader");
+
+	GLfloat transform[] = {
+    0.0f, 0.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 1.0f, 0.0f,
+    0.0f, 0.0f, 0.0f, 1.0f,
+  };
+	m_Shader->setUnifromMatrix4fv("transform", transform);
+	m_Shader->bind();
 
 	VertexBuffer* buffer = VertexBuffer::create(BufferType::DYNAMIC);
-	buffer->resize(RENDERER_BUFFER_SIZE);
-
+	buffer->resize(RENDERER_BUFFER_SIZE); // in fact it also binds actual buffer
+	
 	BufferLayout layout;
 	layout.push<math::Vec3f>("POSITION"); // Position
 	layout.push<math::Vec2f>("TEXCOORD"); // UV
-	layout.push<byte>("ID"); // Texture Index
+	layout.push<float>("TEXID"); // Texture Index
 	layout.push<float>("COLOR", 4, true); // Color
 	buffer->setLayout(layout);
 
+
 	m_VertexArray = VertexArray::create();
 	m_VertexArray->pushBuffer(buffer);
+
 
 	uint* indices = new uint[RENDERER_INDICES_SIZE];
 
@@ -58,20 +86,25 @@ void Renderer_2D::init() {
 	m_IndexBuffer = IndexBuffer::create(indices, RENDERER_INDICES_SIZE);
 	m_VertexArray->unbind();
 
+	
+
 	// Setup Framebuffer
-	m_Framebuffer = FrameBuffer::create(m_ViewportSize.x, m_ViewportSize.y);
+	//m_Framebuffer = FrameBuffer::create(m_ViewportSize.x, m_ViewportSize.y);
 
 	//m_FramebufferMaterial = new Material(ShaderFactory::SimpleShader());
 	//m_FramebufferMaterial->SetUniform("pr_matrix", maths::mat4::Orthographic(0, (float)m_ScreenSize.x, (float)m_ScreenSize.y, 0, -1.0f, 1.0f));
 	//m_FramebufferMaterial->SetTexture("u_Texture", m_Framebuffer->GetTexture());
 	//m_ScreenQuad = MeshFactory::CreateQuad(0, 0, (float)m_ScreenSize.x, (float)m_ScreenSize.y);
 
-	//m_PostEffects = spnew PostEffects();
+	//m_PostEffects = new PostEffects();
 	//m_PostEffectsBuffer = Framebuffer2D::Create(m_ViewportSize.x, m_ViewportSize.y);
+
+	//delete buffer;
 }
 
 
 void Renderer_2D::push(const Renderable_2D* renderable){
+	// TODO: first push all the renderables into separate map for later sorting
 	if (!renderable->isVisible())
 		return;
 
@@ -109,6 +142,7 @@ void Renderer_2D::push(const Renderable_2D* renderable){
 	m_Buffer++;
 
 	//vertex = *m_TransformationBack * vec3(max.x, min.y);
+	vertex = math::Vec3f(10, 0, 0);
 	m_Buffer->vertex = vertex;
 	m_Buffer->uv = uv[1];
 	//m_Buffer->mask_uv = maskTransform * vertex;
@@ -118,6 +152,7 @@ void Renderer_2D::push(const Renderable_2D* renderable){
 	m_Buffer++;
 
 	//vertex = *m_TransformationBack * max;
+	vertex = math::Vec3f(10, 10, 0);
 	m_Buffer->vertex = vertex;
 	m_Buffer->uv = uv[2];
 	//m_Buffer->mask_uv = maskTransform * vertex;
@@ -127,6 +162,7 @@ void Renderer_2D::push(const Renderable_2D* renderable){
 	m_Buffer++;
 
 	//vertex = *m_TransformationBack * vec3(min.x, max.y);
+	vertex = math::Vec3f(0, 10, 0);
 	m_Buffer->vertex = vertex;
 	m_Buffer->uv = uv[3];
 	//m_Buffer->mask_uv = maskTransform * vertex;
@@ -139,11 +175,13 @@ void Renderer_2D::push(const Renderable_2D* renderable){
 }
 
 void Renderer_2D::flush() {
-	m_VertexArray->bind(); std::cout << "m_VertexArray->bind();\n";
+	// TODO: sort renderables based in uint key and build the actial buffer
+
+	m_VertexArray->bind();
 	m_IndexBuffer->bind();
-	//m_VertexArray->draw(m_IndexCount);
+	m_VertexArray->draw(m_IndexCount);
 	m_IndexBuffer->unbind();
-	m_VertexArray->unbind(); std::cout << "m_VertexArray->unbind();\n";
+	m_VertexArray->unbind();
 
 	m_IndexCount = 0;
 
@@ -202,8 +240,8 @@ void Renderer_2D::start() {
 			m_Framebuffer->clear(); // TODO: Clear somewhere else, since this basically limits to one draw call
 			//Renderer_2D::setBlendFunction(RendererBlendFunction::ONE, RendererBlendFunction::ZERO);
 	} else {
-			//glBindFramebuffer(GL_FRAMEBUFFER, m_ScreenBuffer);
-			//Renderer_2D::setViewport(0, 0, m_ScreenSize.x, m_ScreenSize.y);
+		//Renderer_2D::setViewport(0, 0, m_ScreenSize.x, m_ScreenSize.y);
+		//GL_CALL(glViewport(0, 0, m_ScreenSize.x,  m_ScreenSize.y));
 	}
 	
 	m_VertexArray->bind();

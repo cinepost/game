@@ -3,6 +3,7 @@
 
 #include "svq/api.h"
 #include "svq/math/vec2.h"
+#include "svq/gfx/shader.h"
 #include "svq/gfx/frame_buffer.h"
 #include "svq/gfx/vertex_array.h"
 #include "svq/gfx/index_buffer.h"
@@ -14,6 +15,25 @@ namespace gfx {
 enum class SVQ_API RenderTarget {
 		SCREEN = 0,
 		BUFFER = 1
+};
+
+struct UniformBuffer {
+	byte* buffer;
+	uint size;
+
+	UniformBuffer() {}
+	UniformBuffer(byte* buffer, uint size) : buffer(buffer), size(size) {
+		memset(buffer, 0, size);
+	}
+};
+
+struct BR2DSystemUniform {
+	UniformBuffer buffer;
+	uint offset;
+
+	BR2DSystemUniform() {}
+	BR2DSystemUniform(const UniformBuffer& buffer, uint offset) : buffer(buffer), offset(offset) {
+	}
 };
 
 class Renderer_2D { 
@@ -28,15 +48,21 @@ class Renderer_2D {
     	void flush();
 
     private:
-    	void init();
+    	void _init();
 
     private:
+    	std::vector<BR2DSystemUniform> m_SystemUniforms;
+			std::vector<UniformBuffer> m_SystemUniformBuffers;
+
+			Shader* m_Shader;
     	RenderTarget m_Target;
     	VertexArray* m_VertexArray;
 			IndexBuffer* m_IndexBuffer;
 			VertexData* m_Buffer;
 			FrameBuffer* m_Framebuffer;
 			FrameBuffer* m_PostEffectsBuffer;
+
+			//std::map<uint sort_key, Renderable_2D* renderable> m_Renderables; 
 
 			VertexArray* m_ScreenQuad;
 

@@ -24,8 +24,8 @@ class Renderer_2D;
 struct VertexData {
     math::Vec3f vertex;
     math::Vec2f uv;
+    float texture_id;
     math::Vec4f color;
-    unsigned char texture_id;
     //unsigned char shader_id;
 };
 

@@ -22,7 +22,6 @@ class GL_VertexArray : public VertexArray {
 		void draw(uint count) const override;
 
 	private:
-		uint m_Handle;
 		std::vector<VertexBuffer*> m_Buffers;
 };
 

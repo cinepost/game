@@ -10,9 +10,10 @@ namespace gfx {
 VertexBuffer* VertexBuffer::create(BufferType type) {
 	#ifdef _SVQ_OPENGL
 	return new GL_VertexBuffer(type);
-	#endif
-
+	#else
+	assert(false);
 	return nullptr;
+	#endif
 }
 
 }
