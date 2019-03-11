@@ -38,6 +38,7 @@ class SVQ_API App {
 		gfx::Sprite *m_Sprite;
 
 		float tst;
+		GLuint VAO;
 };
 
 }

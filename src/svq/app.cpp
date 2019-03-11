@@ -76,12 +76,11 @@ bool App::init() {
 	}
 
 	// testing renderer
-	GLuint VAO;
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
 	m_Renderer = new gfx::Renderer_2D( width, height);
-	m_Sprite = new gfx::Sprite( 10, 10, 32, 32, math::Vec4f(1, 1, 1, 1));
+	m_Sprite = new gfx::Sprite( 0, 0, 32, 32, math::Vec4f(1, 1, 1, 1));
 
 	tst = .0f;
 
@@ -130,10 +129,11 @@ int App::run() {
 }
 
 void App::resize(uint width, uint height) {
-	glViewport( 0, 0, width, height );	
+	glViewport( 0, 0, width, height );
 }
 
 void App::onRender() {
+	glBindVertexArray(VAO);
 	glDisable( GL_DEPTH_TEST );
 	glClearColor( tst, 0.75, 0.0, 0.0 );
 
@@ -166,6 +166,8 @@ void App::onRender() {
     do_abort = true;
   }
   if (do_abort)abort();
+
+  //glBindVertexArray(0);
 }
 
 }

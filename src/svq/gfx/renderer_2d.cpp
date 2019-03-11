@@ -116,8 +116,7 @@ void Renderer_2D::push(const Renderable_2D* renderable){
 	const std::vector<math::Vec2f>& uv = renderable->getUVs();
 	const Texture* texture = renderable->getTexture();
 
-	//float textureSlot = 0.0f;
-	unsigned char textureSlot = 0;
+	float textureSlot = 0.0f;
 	//if (texture)
 	//	textureSlot = submitTexture(renderable->getTexture());
 
@@ -142,7 +141,7 @@ void Renderer_2D::push(const Renderable_2D* renderable){
 	m_Buffer++;
 
 	//vertex = *m_TransformationBack * vec3(max.x, min.y);
-	vertex = math::Vec3f(10, 0, 0);
+	vertex = math::Vec3f(20, 0, 0);
 	m_Buffer->vertex = vertex;
 	m_Buffer->uv = uv[1];
 	//m_Buffer->mask_uv = maskTransform * vertex;
@@ -176,6 +175,17 @@ void Renderer_2D::push(const Renderable_2D* renderable){
 
 void Renderer_2D::flush() {
 	// TODO: sort renderables based in uint key and build the actial buffer
+
+	m_Shader->bind();
+	float aspect = (float)m_ScreenSize.y / (float)m_ScreenSize.x;
+	GLfloat transform[] = {
+    aspect, 0.0f, 0.0f, 0.0f,
+    0.0f, 1.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 1.0f, 0.0f,
+    0.0f, 0.0f, 0.0f, 20.0f,
+  };
+	m_Shader->setUnifromMatrix4fv("transform", transform);
+	m_Shader->bind();
 
 	m_VertexArray->bind();
 	m_IndexBuffer->bind();

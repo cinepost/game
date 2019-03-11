@@ -44,7 +44,7 @@ namespace svq{ namespace gfx{
 	}
 
 	void* GL_VertexBuffer::getPointerInternal() {
-		void* result = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+		GL_CALL(void* result = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 		return result;
 	}
 
